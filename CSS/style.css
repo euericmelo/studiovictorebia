@@ -1,0 +1,501 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url(masculino.css);
+@import url(feminino.css);
+@import url(manicure.css);
+
+
+/* ========================== */
+/* RESET BÁSICO               */
+/* ========================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+
+/* ========================== */
+/* HEADER / NAVBAR            */
+/* ========================== */
+.container {
+    background-color: #320697;
+    display: flex;
+    padding: 12px 20px;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    width: 100%;
+    z-index: 1000;
+    top:0;
+}
+
+.logo {
+    width: 55px;
+}
+
+.navbar {
+    display: flex;
+    gap: 25px;
+}
+.navbar a {
+    text-decoration: none;
+    color: aliceblue;
+    font-size: 1.2rem;
+    text-transform: uppercase;
+}
+
+/* ========================== */
+/* MENU HAMBURGUER MOBILE      */
+/* ========================== */
+.menu-btn {
+    width: 35px;
+    height: 28px;
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    cursor: pointer;
+    z-index: 2000;
+}
+
+.menu-btn span {
+    display: block;
+    height: 4px;
+    background: #ffffff;
+    border-radius: 3px;
+    transition: 0.3s ease;
+}
+
+.menu-btn.active span:nth-child(1) {
+    transform: translateY(12px) rotate(45deg);
+}
+.menu-btn.active span:nth-child(2) {
+    opacity: 0;
+}
+.menu-btn.active span:nth-child(3) {
+    transform: translateY(-12px) rotate(-45deg);
+}
+
+.navbar.mobile-show {
+    position: fixed;
+    top: 60px;
+    left: 0;
+    width: 100%;
+    background: rgba(50, 6, 151, 0.92);
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    gap: 25px;
+    padding: 25px 0;
+    animation: slideDown .3s ease forwards;
+    z-index: 1500;
+}
+
+@keyframes slideDown {
+    from { top: -200px; }
+    to { top: 60px; }
+}
+
+@media (max-width: 600px) {
+    .menu-btn {
+        display: flex;
+    }
+
+    .navbar {
+        position: absolute;
+        top: -300px;
+        left: 0;
+        width: 100%;
+        flex-direction: column;
+        gap: 20px;
+    }
+}
+
+/* ========================== */
+/* MAIN                       */
+/* ========================== */
+#Inicio {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.bg-video {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: translate(-50%, -50%);
+  z-index: -1;
+  filter: brightness(65%);
+  pointer-events: none;
+}
+
+video::-webkit-media-controls {
+  display: none !important;
+}
+
+.conteudo-inicio {
+  height: 100%;
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  color: white;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* ========================== */
+/* TÍTULOS H2                 */
+/* ========================== */
+h2 {
+    font-size: 2rem;
+    color: #d63384;
+    text-align: center;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+/* ========================== */
+/* SERVIÇOS                   */
+/* ========================== */
+.container-servicos {
+    display: flex;
+    gap: 35px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 12px auto;
+
+    
+}
+
+.servico {
+    background: #fff;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+    overflow: hidden;
+    flex: 1; 
+    min-width: 250px;
+margin:12px;
+}
+
+.servico:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+.servico img {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+}
+
+.servico h3 {
+    font-size: 1.2rem;
+    margin: 15px 0;
+    color: #b32169;
+    font-weight: 600;
+    text-align: center;
+}
+
+.servico ul {
+    padding: 0 25px 25px;
+    text-align: center;
+}
+
+/* ========================== */
+/* GALERIA RESPONSIVA          */
+/* ========================== */
+.sessao-galeria {
+    padding: 40px 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.galeria {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+}
+
+.galeria img {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+}
+
+@media (max-width: 600px) {
+    .galeria {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+
+    .galeria img {
+        height: 150px;
+    }
+}
+
+/* ========================== */
+/* DEPOIMENTOS                */
+/* ========================== */
+.depoimentos {
+    background: #fff7f7;
+    padding: 60px 20px;
+    text-align: center;
+    gap: 25px;
+}
+
+.depoimento {
+    display: flex;
+    gap: 35px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+/* Cards */
+.card {
+    background: #fff;
+    border-radius: 6px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 250px;
+}
+
+.card-media img {
+    width: 180px;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 50%;
+    padding: 10px;
+    display: block;
+    margin: 0 auto;
+}
+
+.card-body {
+    padding: 18px;
+    text-align: center;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* Mobile scroll lateral */
+@media (max-width: 600px) {
+    .depoimento {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        padding-bottom: 10px;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .card {
+        flex: 0 0 auto;
+    }
+}
+
+/* ========================== */
+/* BOTÕES                     */
+/* ========================== */
+.botao {
+    display: inline-block;
+    padding: 14px 32px;
+    font-size: 20px;
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: 50px;
+    color: white;
+    background: linear-gradient(45deg, #ff0000, #ff4747, #ff7b7b);
+    box-shadow: 0 6px 20px rgba(255,0,0,0.4);
+    transition: .3s ease;
+    text-align: center;
+    margin: 0 auto 20px auto;
+}
+
+/* ========================== */
+/* SOBRE                       */
+/* ========================== */
+.Sobre {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 20px;
+    font-size: 1.15rem;
+    font-weight: 500;
+    line-height: 1.8;
+    color: #333;
+    text-align: justify;
+}
+
+/* ========================== */
+/* ENDEREÇO / MAPA             */
+/* ========================== */
+.Endereço {
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+    gap: 20px;
+    padding: 20px;
+}
+
+.local {
+    width: 90%;
+    height: auto;
+    
+}
+
+.mapa {
+    width: 90%;
+    height: auto;
+}
+
+.mapa iframe {
+    width: 100%;
+    height: 100%;
+    border: 0;
+}
+
+@media (max-width: 600px) {
+    .Endereço {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .local, .mapa {
+        width: 100%;
+    }
+
+    .mapa iframe {
+        height: 320px !important;
+    }
+}
+
+/* ========================== */
+/* FOOTER                      */
+/* ========================== */
+.footer {
+    width: 100%;
+    background-color: #320697;
+    color: #ffffff;
+    text-align: center;
+    padding: 20px 10px;
+    margin-top: 40px;
+    font-size: 0.95rem;
+}
+
+.footer .dev {
+    display: block;
+    margin-top: 5px;
+    font-size: 0.85rem;
+    opacity: 0.9;
+}
+
+.footer .dev strong {
+    color: #d63384;
+}
+
+/* ========================== */
+/* BOTÃO WHATSAPP FLUTUANTE    */
+/* ========================== */
+#wa-float {
+  position: fixed;
+  right: 20px;
+  bottom: 24px;
+  width: 58px;
+  height: 58px;
+  background: linear-gradient(180deg, #25D366, #128C7E);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.18);
+  z-index: 9999;
+  cursor: pointer;
+  animation: pulseBounce 2.2s infinite ease-in-out;
+}
+
+#wa-float img {
+  width: 30px;
+  height: 30px;
+  pointer-events: none;
+}
+
+@keyframes pulseBounce {
+  0% { transform: scale(1) translateY(0); box-shadow: 0 6px 20px rgba(0,0,0,0.18); }
+  20% { transform: scale(1.08) translateY(-3px); box-shadow: 0 8px 26px rgba(0,0,0,0.22); }
+  40% { transform: scale(1) translateY(0); }
+  60% { transform: scale(1.06) translateY(-2px); }
+  80% { transform: scale(1) translateY(0); }
+  100% { transform: scale(1) translateY(0); }
+}
+
+@media (max-width: 420px) {
+  #wa-float {
+    right: 16px;
+    bottom: 18px;
+    width: 52px;
+    height: 52px;
+  }
+}
+.btn-inicio {
+    text-align: center;
+    margin-top: 40px;
+}
+/* STYLE BOTAO INSTA */
+
+.container-insta {
+  margin-top: 38px;       /* <<< espaço em cima */
+  display: flex;
+  justify-content: center; /* <<< centraliza */
+}
+
+/* Botão */
+.instagram-button {
+  padding: 9px;
+  background: linear-gradient(45deg, #f58529, #dd2a7b, #8134af);
+  border-radius: 6px;
+  box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+  transition: transform 0.15s ease, filter 0.15s ease;
+}
+
+.instagram-button a {
+  color: #fff;
+  text-decoration: none;
+  font-size: 9px;
+  font-weight: bold;
+}
+
+/* hover */
+.instagram-button:hover {
+  transform: translateY(-3px);
+  filter: brightness(1.08);
+}
+
+/* click */
+.instagram-button:active {
+  transform: translateY(1px);
+}
+.h2s{
+padding-top:80px;
+font-size: 2rem;
+    color: #d63384;
+    text-align: center;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+.instagram-button a:link,
+.instagram-button a:visited,
+.instagram-button a:hover,
+.instagram-button a:active {
+  color: #fff;           /* mantém branco sempre */
+  text-decoration: none; /* remove sublinhado */
+}
+.recover-box[hidden] {
+  display: none !important;
+}

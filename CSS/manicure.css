@@ -1,0 +1,172 @@
+/*  CONTAINER PRINCIPAL */
+.manicure {
+    padding: 1.5rem;
+    padding-top: 120px; /* evita ficar embaixo da navbar */
+}
+
+/* TÍTULO E DESCRIÇÃO (neutros) */
+
+.manicure h1 {
+    text-align: center;
+    font-size: 38px;
+    font-weight: 700;
+    color: #333; /* cor neutra */
+    margin-top: 0;
+}
+
+.manicure > p {
+    text-align: center;
+    margin-top: 12px;
+    font-size: 18px;
+    color: #555; /* cinza neutro */
+    margin-bottom: 40px;
+}
+
+/*  LISTA DE SERVIÇOS*/
+
+.lista-servicos {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+    gap: 25px;
+    padding: 20px;
+    max-width: 1200px;
+    margin: auto;
+}
+
+.servico3 {
+    background: #fff7f7;
+    border-radius: 14px;
+    padding: 15px;
+    text-align: center;
+    transition: .3s ease;
+    border: 1px solid #222;
+}
+
+.servico3:hover {
+    transform: translateY(-5px);
+    border-color: #ff3b3b;
+    box-shadow: 0 0 18px rgba(255, 60, 60, 0.4);
+}
+
+.servico3 img {
+    width: 100%;
+height: 220px;   /* define uma altura fixa */
+object-fit: cover;  /* corta a imagem sem distorcer */
+ border-radius: 12px;
+ margin-bottom: 15px;
+}
+
+.servico3 h2 {
+    font-size: 22px;
+    margin-bottom: 10px;
+}
+
+.servico3 p {
+    font-size: 15px;
+    color: black;
+    line-height: 1.5;
+}
+
+/* RESPONSIVIDADE*/
+
+@media (max-width: 600px) {
+    .manicure {
+        padding-top: 140px; /* mais espaço para nav fixa */
+    }
+
+    .manicure h1 {
+        font-size: 30px;
+    }
+
+    .manicure > p {
+        font-size: 16px;
+        padding: 0 10px;
+        margin-bottom: 35px;
+    }
+
+    .servico3 h2 {
+        font-size: 20px;
+    }
+}
+
+/* DEPOIMENTOS     */
+
+body {
+    font-family: Arial, sans-serif;
+}
+
+.testimonials {
+    text-align: center;
+    padding: 40px;
+    max-width: 800px;
+    margin: auto;
+}
+
+.carousel {
+    position: relative;
+    margin-top: 30px;
+}
+
+.slide {
+    display: none;
+    padding: 30px;
+    border: 1px solid #eee;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.slide.active {
+    display: block;
+}
+
+.avatar {
+    width: 60px;
+    height: 60px;
+    margin: auto;
+    background: #ddd;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    font-weight: bold;
+}
+
+.stars {
+    color: gold;
+    font-size: 20px;
+    margin: 10px 0;
+}
+
+.dots {
+    margin-top: 20px;
+}
+
+.dot {
+    height: 10px;
+    width: 10px;
+    background: #bbb;
+    border-radius: 50%;
+    display: inline-block;
+    margin: 0 5px;
+    cursor: pointer;
+}
+
+.dot.active {
+    background: #333;
+}
+
+/* Mobile scroll lateral */
+@media (max-width: 600px) {
+    .depoimento {
+
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        padding-bottom: 10px;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .card {
+        margin: 12px;
+    }   
+}
