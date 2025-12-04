@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Agendamento | Studio Victor e Bia</title>
+  <link rel="stylesheet" href="./CSS/agendamento.css">
+</head>
+<body>
+
+<!-- NAVBAR -->
+<header>
+  <div class="container">
+    <img src="./imagens/logo.png" alt="Logo salão Victor e Bia" class="logo">
+
+    <div class="menu-btn" id="menuBtn">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+
+ <nav class="navbar" id="navbar">
+    <a href="./index.html">Início</a>
+    <a href="./serviços.html">Serviços</a>
+    <a href="./sobre.html">Sobre</a>
+    <a href="./agendamento.html">agendamento</a>
+</nav>
+  </div>
+
+  <div class="overlay" id="overlay"></div>
+</header>
+
+<main class="container-a">
+  <h1>Agende seu horário</h1>
+
+  <form id="form-agenda" autocomplete="off">
+
+    <div class="campo">
+      <label for="nome">Nome completo</label>
+      <input id="nome" type="text" required>
+    </div>
+
+    <div class="campo">
+      <label for="telefone">Telefone (WhatsApp)</label>
+      <input id="telefone" type="tel" placeholder="11999998888" required>
+    </div>
+
+    <div class="campo">
+      <label for="servico">Serviço</label>
+      <select id="servico" required>
+      <option value="Masculino">Masculino</option>
+<option value="Feminino">Feminino</option>
+<option value="Manicure">Manicure</option>
+<option value="Pedicure">Pedicure</option>
+      </select>
+    </div>
+
+    <div class="campo">
+      <label for="data">Data (Terça a Sábado)</label>
+      <input id="data" type="date" required>
+    </div>
+
+    <div class="horarios">
+      <h3>Horários disponíveis</h3>
+      <div id="lista-horarios"></div>
+    </div>
+
+    <button type="submit" class="btn-agendar">Finalizar Agendamento</button>
+  </form>
+</main>
+
+<!-- PAINEL ADMIN (oculto) -->
+<div id="painel" class="painel">
+  <div class="painel-box">
+    <h2>Agendamentos Salvos</h2>
+    <div id="lista-admin"></div>
+    <button id="fecharPainel" class="fechar-btn">Fechar</button>
+  </div>
+</div>
+
+<!-- JS -->
+<script src="./JS/agendamento.js" defer></script>
+
+</body>
+</html>

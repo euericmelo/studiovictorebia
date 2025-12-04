@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Painel Admin — Studio Victor e Bia</title>
+  <link rel="stylesheet" href="./CSS/admin.css">
+</head>
+<body>
+
+<!-- ====================================== -->
+<!--               LOGIN                     -->
+<!-- ====================================== -->
+<div id="login-container" class="login-container">
+  <div class="login-card">
+
+    <h2>Área Administrativa</h2>
+    <p class="sub">Acesse com seu usuário e senha</p>
+
+    <div class="input-group">
+      <input id="admin-user" type="text" class="login-input" placeholder="Usuário">
+    </div>
+
+    <div class="input-group">
+      <input id="admin-pass" type="password" class="login-input" placeholder="Senha">
+    </div>
+
+    <button id="btn-login" class="btn-login">Entrar</button>
+
+    <div class="recover-link">
+      <button id="btn-esqueci" class="btn-link">Esqueci minha senha</button>
+    </div>
+
+    <div id="login-erro" class="login-erro" hidden>
+      Usuário ou senha incorretos.
+    </div>
+  </div>
+</div>
+
+<!-- POPUP DE RECUPERAÇÃO -->
+<div id="recover-box" class="recover-box" hidden>
+  <div class="recover-card">
+    <h3>Recuperar Senha</h3>
+    <p>Digite o e-mail cadastrado</p>
+
+    <input id="recover-email" type="email" class="login-input" placeholder="Seu e-mail">
+
+    <button id="btn-send-recover" class="btn-login">Enviar link</button>
+    <button id="btn-close-recover" class="btn-secondary">Fechar</button>
+
+    <div id="recover-msg" class="recover-msg" hidden></div>
+  </div>
+</div>
+
+<!-- ====================================== -->
+<!--            PAINEL ADMIN                 -->
+<!-- ====================================== -->
+<div id="admin-panel" class="admin-panel" style="display:none;">
+
+  <header class="header">
+    <div class="wrap head-flex">
+      <h1>Painel de Agendamentos</h1>
+
+      <button id="btn-logout" class="btn danger">
+        Sair
+      </button>
+    </div>
+
+    <div class="wrap controls">
+      <input id="filtro-data" type="date" class="control-input">
+      <input id="buscar" type="search" class="control-input" placeholder="Buscar…">
+      <button id="btn-export" class="btn">Exportar CSV</button>
+      <button id="btn-clear" class="btn danger">Limpar Tudo</button>
+    </div>
+  </header>
+
+  <main class="wrap main">
+
+    <!-- LISTA -->
+    <section class="card">
+      <h2>Lista de Agendamentos</h2>
+
+      <div id="not-found" class="not-found" hidden>
+        Nenhum agendamento encontrado.
+      </div>
+
+      <div id="lista" class="lista"></div>
+    </section>
+
+    <!-- CONFIGURAÇÕES -->
+    <section class="card" style="margin-top:25px;">
+      <h2>Configurações de Acesso</h2>
+      <p>Altere usuário e senha do painel administrativo.</p>
+
+      <input id="new-user" class="login-input" type="text" placeholder="Novo usuário">
+      <input id="new-pass" class="login-input" type="password" placeholder="Nova senha">
+
+      <button id="save-access" class="btn">Salvar Acesso</button>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <div class="wrap">
+      <small>Studio Victor & Bia — Painel Administrativo</small>
+    </div>
+  </footer>
+
+</div>
+
+<script type="module" src="./JS/admin.js"></script>
+</body>
+</html>
