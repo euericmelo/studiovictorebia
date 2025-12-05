@@ -1,119 +1,197 @@
-// =========================
-//  IMPORTS DO FIREBASE
-// =========================
-import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-import {
-  getFirestore,
-  collection,
-  addDoc
-} from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+// ====================================
+// INICIALIZAÇÃO
+// ====================================
 
-// CONFIGURAÇÃO DO FIREBASE
-const firebaseConfig = {
-  apiKey: "AIzaSyBgswcxd4RxFqz1j0ZQTv43Aj1Xy95Z8Bo",
-  authDomain: "studio-victor-e-bia-d6201.firebaseapp.com",
-  projectId: "studio-victor-e-bia-d6201",
-  storageBucket: "studio-victor-e-bia-d6201.firebasestorage.app",
-  messagingSenderId: "893601916740",
-  appId: "1:893601916740:web:8d9cf3c0b581791575d911"
-};
+const form = document.getElementById("form-agenda");
+const listaHorarios = document.getElementById("lista-horarios");
+const KEY = "agendamentos";
 
-// INICIALIZAR FIREBASE
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+// ====================================
+// LOCAL STORAGE
+// ====================================
 
-// =========================
-//  ELEMENTOS DO FORMULÁRIO
-// =========================
-const form = document.getElementById("form-agendamento");
-const servicoSelect = document.getElementById("servico");
-const calendario = document.getElementById("calendario");
-const horarioSelect = document.getElementById("horario");
-
-// =========================
-//  HORÁRIOS DISPONÍVEIS
-// =========================
-const horariosPadrao = [
-  "09:00","09:30","10:00","10:30",
-  "11:00","11:30","13:00","13:30",
-  "14:00","14:30","15:00","15:30",
-  "16:00","16:30","17:00"
-];
-
-// =========================
-//  LOCALSTORAGE (opcional)
-// =========================
 function getStore() {
-  return JSON.parse(localStorage.getItem("agenda")) || {};
+  const raw = localStorage.getItem(KEY);
+  return raw ? JSON.parse(raw) : {};
 }
 
-function saveStore(store) {
-  localStorage.setItem("agenda", JSON.stringify(store));
+function saveStore(obj) {
+  localStorage.setItem(KEY, JSON.stringify(obj));
 }
 
-// =========================
-//  GERAR HORÁRIOS  DISPONÍVEIS
-// =========================
-function gerarHorarios() {
-  horarioSelect.innerHTML = "<option value=''>Selecione um horário</option>";
+// ====================================
+// GERA HORÁRIOS (09:30 → 18:00 de 30 em 30min)
+// ====================================
 
-  const data = calendario.value;
-  const servico = servicoSelect.value;
+const horariosPadrao = [];
+let start = 9 * 60 + 30; 
+const end = 18 * 60;
 
-  if (!data || !servico) return;
+while (start <= end) {
+  const h = String(Math.floor(start / 60)).padStart(2, '0');
+  const m = String(start % 60).padStart(2, '0');
+  horariosPadrao.push(`${h}:${m}`);
+  start += 30;
+}
+
+// ====================================
+// CARREGAR HORÁRIOS DA DATA ESCOLHIDA
+// ====================================
+
+document.getElementById("data").addEventListener("change", (e) => {
+  carregarHorarios(e.target.value);
+});
+
+function carregarHorarios(dataEscolhida) {
+  listaHorarios.innerHTML = "";
+
+  if (!dataEscolhida) return;
+
+  const parts = dataEscolhida.split("-");
+  const dataLocal = new Date(parts[0], parts[1] - 1, parts[2]);
+  const diaSemana = dataLocal.getDay(); // 0 domingo, 1 segunda
 
   const store = getStore();
-  const agendados = store[data] ? store[data].map(a => a.hora) : [];
+  const ocupados = store[dataEscolhida]?.map(a => a.hora) || [];
 
-  horariosPadrao.forEach(h => {
-    if (!agendados.includes(h)) {
-      const option = document.createElement("option");
-      option.value = h;
-      option.textContent = h;
-      horarioSelect.appendChild(option);
+  horariosPadrao.forEach(hora => {
+    const div = document.createElement("div");
+    div.className = "horario";
+    div.textContent = hora;
+
+    if (ocupados.includes(hora)) div.classList.add("ocupado");
+    if (diaSemana === 0 || diaSemana === 1) div.classList.add("desabilitado");
+
+    if (!div.classList.contains("ocupado") && !div.classList.contains("desabilitado")) {
+      div.addEventListener("click", () => {
+        document.querySelectorAll(".horario").forEach(x => x.classList.remove("selecionado"));
+        div.classList.add("selecionado");
+      });
     }
+
+    listaHorarios.appendChild(div);
   });
 }
 
-// Atualiza horários quando muda serviço ou data
-servicoSelect.addEventListener("change", gerarHorarios);
-calendario.addEventListener("change", gerarHorarios);
+// ====================================
+// ENVIO PARA WHATSAPP
+// ====================================
 
-// =========================
-//  SALVAR NO FIRESTORE
-// =========================
-async function salvarNoFirestore(agendamento) {
-  try {
-    await addDoc(collection(db, "agendamentos"), agendamento);
-  } catch (erro) {
-    console.error("Erro ao salvar no Firestore:", erro);
-  }
+function enviarWhatsApp(nome, telefone, servico, data, hora) {
+
+  const numero = "5511972776263"; // Altere seu número aqui se necessário
+
+  const p = data.split("-");
+  const dataFormatada = `${p[2]}/${p[1]}/${p[0]}`;
+
+  const msg =
+    "🔔 *NOVO AGENDAMENTO*\n\n" +
+    `👤 *Nome:* ${nome}\n` +
+    `📞 *Telefone:* ${telefone}\n` +
+    `💇‍♀️ *Serviço:* ${servico}\n` +
+    `📅 *Data:* ${dataFormatada}\n` +
+    `⏰ *Hora:* ${hora}`;
+
+  const link = `https://wa.me/${numero}?text=${encodeURIComponent(msg)}`;
+
+  window.open(link, "_blank");
 }
 
-// =========================
-//  SUBMIT DO FORMULÁRIO
-// =========================
-form.addEventListener("submit", async (e) => {
+// ====================================
+// SUBMIT DO FORMULÁRIO
+// ====================================
+
+form.addEventListener("submit", (e) => {
   e.preventDefault();
 
-  const data = calendario.value;
-  const hora = horarioSelect.value;
-  const nome = document.getElementById("nome").value;
-  const telefone = document.getElementById("telefone").value;
-  const servico = servicoSelect.value;
+  const nome = document.getElementById("nome").value.trim();
+  const telefone = document.getElementById("telefone").value.trim();
+  const servico = document.getElementById("servico").value.trim();
+  const data = document.getElementById("data").value;
 
-  const agendamento = { data, hora, nome, telefone, servico };
+  const servicosValidos = ["masculino", "feminino", "manicure", "pedicure"];
 
-  // ✔️ SALVAR NO FIRESTORE
-  await salvarNoFirestore(agendamento);
+  if (!servicosValidos.includes(servico.toLowerCase())) {
+    alert("Escolha um serviço válido!");
+    return;
+  }
 
-  // ✔️ SALVAR NO LOCALSTORAGE (opcional, usado pelo admin)
+  const horarioSelecionado = document.querySelector(".horario.selecionado");
+
+  if (!horarioSelecionado) {
+    alert("Selecione um horário!");
+    return;
+  }
+
+  const hora = horarioSelecionado.textContent;
+
+  // Salvar no LocalStorage
   const store = getStore();
   if (!store[data]) store[data] = [];
+
   store[data].push({ hora, nome, telefone, servico });
   saveStore(store);
 
+  enviarWhatsApp(nome, telefone, servico, data, hora);
+
   alert("Agendamento realizado com sucesso!");
+
   form.reset();
-  horarioSelect.innerHTML = "<option value=''>Selecione uma data</option>";
+  listaHorarios.innerHTML = "";
 });
+
+// ====================================
+// LOGO → CLIQUE SEGURO PARA PAINEL ADMIN
+// ====================================
+
+let clicks = 0;
+const logo = document.querySelector(".logo");
+
+if (logo) {
+  logo.addEventListener("click", () => {
+    clicks++;
+    if (clicks >= 3) {
+      const adminPath = "./admin.html";
+      fetch(adminPath, { method: "HEAD" })
+        .then(resp => {
+          if (resp.ok) window.location.href = adminPath;
+          else alert("Painel administrativo não encontrado!");
+        })
+        .catch(() => alert("Erro ao tentar abrir o painel administrativo!"));
+      clicks = 0;
+    }
+    setTimeout(() => clicks = 0, 800);
+  });
+}
+
+// ====================================
+// MENU HAMBÚRGUER + OVERLAY
+// ====================================
+
+const menuBtn = document.getElementById("menuBtn");
+const navbar = document.getElementById("navbar");
+const overlay = document.getElementById("overlay");
+
+if (menuBtn && navbar && overlay) {
+
+  function abrirMenu() {
+    menuBtn.classList.add("active");
+    navbar.classList.add("mobile-show");
+    navbar.classList.remove("mobile-hidden");
+    overlay.classList.add("show");
+  }
+
+  function fecharMenu() {
+    menuBtn.classList.remove("active");
+    navbar.classList.remove("mobile-show");
+    navbar.classList.add("mobile-hidden");
+    overlay.classList.remove("show");
+  }
+
+  menuBtn.addEventListener("click", () => {
+    if (navbar.classList.contains("mobile-show")) fecharMenu();
+    else abrirMenu();
+  });
+
+  overlay.addEventListener("click", () => fecharMenu());
+}
