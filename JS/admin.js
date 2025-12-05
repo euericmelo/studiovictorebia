@@ -71,7 +71,7 @@ function showLogin() {
 function showAdmin() {
   loginContainer.style.display = "none";
   adminPanel.style.display = "block";
-  loadAgendamentos(); // carregará os agendamentos assim que o admin entrar
+  loadAgendamentos(); 
 }
 
 function openRecover() {
@@ -187,21 +187,23 @@ export async function salvarAgendamento(data) {
 //  CARREGAR AGENDAMENTOS NO PAINEL
 // ===============================
 async function loadAgendamentos() {
-  const lista = document.getElementById("lista-agendamentos");
+  const lista = document.getElementById("lista"); // CORREÇÃO AQUI!!!
   lista.innerHTML = "<p>Carregando...</p>";
 
   const snap = await getDocs(collection(db, "agendamentos"));
 
   lista.innerHTML = "";
 
-  snap.forEach(doc => {
-    const a = doc.data();
+  snap.forEach(docSnap => {
+    const a = docSnap.data();
+
     lista.innerHTML += `
-      <div class="agendamento-item">
+      <div class="card item">
         <strong>${a.nome}</strong><br>
-        Data: ${a.data}<br>
-        Hora: ${a.hora}<br>
-        Serviço: ${a.servico}
+        📅 ${a.data}<br>
+        ⏰ ${a.hora}<br>
+        💇‍♀️ ${a.servico}<br>
+        📞 ${a.telefone}
       </div>
     `;
   });
