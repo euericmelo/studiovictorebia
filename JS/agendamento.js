@@ -7,16 +7,16 @@ const listaHorarios = document.getElementById("lista-horarios");
 const KEY = "agendamentos";
 
 // ====================================
-// LOCAL STORAGE
+// LOCAL STORAGE  (CORRIGIDO PARA ARRAY)
 // ====================================
 
 function getStore() {
   const raw = localStorage.getItem(KEY);
-  return raw ? JSON.parse(raw) : {};
+  return raw ? JSON.parse(raw) : [];
 }
 
-function saveStore(obj) {
-  localStorage.setItem(KEY, JSON.stringify(obj));
+function saveStore(arr) {
+  localStorage.setItem(KEY, JSON.stringify(arr));
 }
 
 // ====================================
@@ -24,7 +24,7 @@ function saveStore(obj) {
 // ====================================
 
 const horariosPadrao = [];
-let start = 9 * 60 + 30; 
+let start = 9 * 60 + 30;
 const end = 18 * 60;
 
 while (start <= end) {
@@ -43,29 +43,28 @@ document.getElementById("data").addEventListener("change", (e) => {
 });
 
 function carregarHorarios(dataEscolhida) {
-
-  // ✅ Correção 1 — impedir carregar quando a data estiver vazia
-  if (!dataEscolhida || dataEscolhida.trim() === "") {
-    listaHorarios.innerHTML = "";
-    return;
-  }
-
   listaHorarios.innerHTML = "";
-
-  const parts = dataEscolhida.split("-");
-  const dataLocal = new Date(parts[0], parts[1] - 1, parts[2]);
-  const diaSemana = dataLocal.getDay(); // 0 domingo, 1 segunda
+  if (!dataEscolhida) return;
 
   const store = getStore();
-  const ocupados = store[dataEscolhida]?.map(a => a.hora) || [];
+  const ocupados = store.filter(a => a.data === dataEscolhida).map(a => a.hora);
 
   horariosPadrao.forEach(hora => {
     const div = document.createElement("div");
     div.className = "horario";
     div.textContent = hora;
 
-    if (ocupados.includes(hora)) div.classList.add("ocupado");
-    if (diaSemana === 0 || diaSemana === 1) div.classList.add("desabilitado");
+    const parts = dataEscolhida.split("-");
+    const dataLocal = new Date(parts[0], parts[1] - 1, parts[2]);
+    const diaSemana = dataLocal.getDay();
+
+    if (ocupados.includes(hora)) {
+      div.classList.add("ocupado");
+    }
+
+    if (diaSemana === 0 || diaSemana === 1) {
+      div.classList.add("desabilitado");
+    }
 
     if (!div.classList.contains("ocupado") && !div.classList.contains("desabilitado")) {
       div.addEventListener("click", () => {
@@ -83,8 +82,7 @@ function carregarHorarios(dataEscolhida) {
 // ====================================
 
 function enviarWhatsApp(nome, telefone, servico, data, hora) {
-
-  const numero = "5511972776263"; // Altere seu número aqui se necessário
+  const numero = "5511972776263";
 
   const p = data.split("-");
   const dataFormatada = `${p[2]}/${p[1]}/${p[0]}`;
@@ -98,12 +96,11 @@ function enviarWhatsApp(nome, telefone, servico, data, hora) {
     `⏰ *Hora:* ${hora}`;
 
   const link = `https://wa.me/${numero}?text=${encodeURIComponent(msg)}`;
-
   window.open(link, "_blank");
 }
 
 // ====================================
-// SUBMIT DO FORMULÁRIO
+// SUBMIT DO FORMULÁRIO (SALVANDO NO FORMATO DO ADMIN)
 // ====================================
 
 form.addEventListener("submit", (e) => {
@@ -111,24 +108,10 @@ form.addEventListener("submit", (e) => {
 
   const nome = document.getElementById("nome").value.trim();
   const telefone = document.getElementById("telefone").value.trim();
-  const servico = document.getElementById("servico").value.trim();
+  const servico = document.getElementById("servico").value.trim().toLowerCase();
   const data = document.getElementById("data").value;
 
-  const servicosValidos = ["masculino", "feminino", "manicure", "pedicure"];
-
-  if (!servicosValidos.includes(servico.toLowerCase())) {
-    alert("Escolha um serviço válido!");
-    return;
-  }
-
-  // ✅ Correção 2 — impedir salvar data vazia
-  if (!data || data.trim() === "") {
-    alert("Selecione uma data válida!");
-    return;
-  }
-
   const horarioSelecionado = document.querySelector(".horario.selecionado");
-
   if (!horarioSelecionado) {
     alert("Selecione um horário!");
     return;
@@ -136,20 +119,24 @@ form.addEventListener("submit", (e) => {
 
   const hora = horarioSelecionado.textContent;
 
-  // Salvar no LocalStorage
-  const store = getStore();
-  if (!store[data]) store[data] = [];
+  // OBJETO FINAL — compatível com admin.js
+  const novo = {
+    nome,
+    telefone,
+    servico,
+    data,
+    hora
+  };
 
-  store[data].push({ hora, nome, telefone, servico });
+  const store = getStore();
+  store.push(novo);
   saveStore(store);
 
   enviarWhatsApp(nome, telefone, servico, data, hora);
 
   alert("Agendamento realizado com sucesso!");
 
-  // ✅ Correção 3 — limpar também o campo DATA
   form.reset();
-  document.getElementById("data").value = "";
   listaHorarios.innerHTML = "";
 });
 
