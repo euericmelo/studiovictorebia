@@ -43,9 +43,14 @@ document.getElementById("data").addEventListener("change", (e) => {
 });
 
 function carregarHorarios(dataEscolhida) {
-  listaHorarios.innerHTML = "";
 
-  if (!dataEscolhida) return;
+  // ✅ Correção 1 — impedir carregar quando a data estiver vazia
+  if (!dataEscolhida || dataEscolhida.trim() === "") {
+    listaHorarios.innerHTML = "";
+    return;
+  }
+
+  listaHorarios.innerHTML = "";
 
   const parts = dataEscolhida.split("-");
   const dataLocal = new Date(parts[0], parts[1] - 1, parts[2]);
@@ -116,6 +121,12 @@ form.addEventListener("submit", (e) => {
     return;
   }
 
+  // ✅ Correção 2 — impedir salvar data vazia
+  if (!data || data.trim() === "") {
+    alert("Selecione uma data válida!");
+    return;
+  }
+
   const horarioSelecionado = document.querySelector(".horario.selecionado");
 
   if (!horarioSelecionado) {
@@ -136,7 +147,9 @@ form.addEventListener("submit", (e) => {
 
   alert("Agendamento realizado com sucesso!");
 
+  // ✅ Correção 3 — limpar também o campo DATA
   form.reset();
+  document.getElementById("data").value = "";
   listaHorarios.innerHTML = "";
 });
 
