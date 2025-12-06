@@ -1,12 +1,11 @@
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyAc1wUxI5NoLFIOO2FY9Bvf9LFcCMhEFOw",
-  authDomain: "studiovictorebia1.firebaseapp.com",
-  projectId: "studiovictorebia1",
-  storageBucket: "studiovictorebia1.firebasestorage.app",
-  messagingSenderId: "557872833324",
-  appId: "1:557872833324:web:fee38263ed34c088120289",
-  measurementId: "G-53X85MZ10M"
+  apiKey: "AIzaSyC3WyAbgjZeEYcA9P-Tzzy6LOWLH28L0TM",
+  authDomain: "studioveb.firebaseapp.com",
+  projectId: "studioveb",
+  storageBucket: "studioveb.firebasestorage.app",
+  messagingSenderId: "218564543902",
+  appId: "1:218564543902:web:96b2b767cbcfea734ec28f"
 };
 
 // Inicializa o Firebase e o Firestore
