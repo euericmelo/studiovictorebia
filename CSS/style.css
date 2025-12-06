@@ -18,7 +18,7 @@
 /* HEADER / NAVBAR            */
 /* ========================== */
 .container {
-    background-color: #320697;
+    background-color: red;
     display: flex;
     padding: 12px 20px;
     justify-content: space-between;
